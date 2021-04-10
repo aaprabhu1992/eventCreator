@@ -1,0 +1,25 @@
+{
+   "name":"Climate Reality Automated Event Creator",
+   "description": " Climate Reality Automated Event Creator in Description",
+   "start_date":"05/10/2021",
+   "start_time":"5:30pm",
+   "end_date":"05/10/2021",
+   "end_time":"6:30pm",
+   "timeZone_Country" :"United States",
+   "timeZone_Time" : "Indiana/Indianapolis - EDT (GMT-04:00)",
+   "venue" : "Zoom",
+   "addr_line_1" : "Climate Reality Project",
+   "addr_line_2" : "Portland Chapter",
+   "addr_city" : "Portland",
+   "addr_state" : "Oregon",
+   "addr_pincode" : "97223",
+   "addr_country" : "United States",
+   "type" : "Workshop",
+   "hostName" : "Portland Chapter",
+   "hostEmail" : "climaterealitypdx@gmail.com",
+   "hostOrg" : "Climate Reality Portland Chapter",
+   "website" : "https://climaterealitypdx.com/",
+   "eventBrite" : {
+	   
+   }	   
+}
