@@ -29,10 +29,18 @@ def HasPageLoadedIDCheck(driver, timeout, elementID):
     except TimeoutException:
         return False
 
-
-def HasPageLoadedClassCheck(driver, timeout, classID):
+def HasPageLoadedLinkCheck(driver, timeout, linkText):
     try:
-        element_present = EC.presence_of_element_located((By.ID, classID))
+        element_present = EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, linkText))
+        WebDriverWait(driver, timeout).until(element_present)
+        return True
+    except TimeoutException:
+        return False
+
+
+def HasPageLoadedClassCheck(driver, timeout, className):
+    try:
+        element_present = EC.presence_of_element_located((By.CLASS_NAME, className))
         WebDriverWait(driver, timeout).until(element_present)
         return True
     except TimeoutException:
