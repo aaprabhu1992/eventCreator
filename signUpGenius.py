@@ -63,6 +63,23 @@ def AddSlots(driver, eventObj):
     saveAndContiueText = "Save and Continue"
     helper.ClickElementFromTagAndText(driver, "span", saveAndContiueText)
     helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
+
+
+def AddSettings(driver, eventObj):
+    helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
+    saveAndContiueText = "Save and Continue"
+    helper.ClickElementFromTagAndText(driver, "span", saveAndContiueText)
+    helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
+
+
+def AddPublish(driver, eventObj):
+    helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
+    publishButton = "Publish"
+    helper.ClickElementFromTagAndText(driver, "button", publishButton)
+    helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
+    element = driver.find_element_by_partial_link_text("https://www.signupgenius")
+    return element.text
+
     
 def addEvent(eventObj, credentials):    
     eventURL = None
@@ -90,6 +107,9 @@ def addEvent(eventObj, credentials):
     # url = AddBasicInformation(driver, eventObj)
     driver.get("https://www.signupgenius.com/index.cfm?go=w.manageSignUp#/29829818/slots/")
     AddSlots(driver, eventObj)
+    AddSettings(driver, eventObj)
+    signUpLink = AddPublish(driver, eventObj)
+    print(signUpLink)
     
     
 
