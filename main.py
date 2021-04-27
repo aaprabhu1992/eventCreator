@@ -66,10 +66,12 @@ helper.PrettyPrintJSON(eventbriteCred)
 
 
 
-# if "signUpGenius" in eventObj:
-    # signUpGenius.addEvent(eventObj["signUpGenius"], signUpGeniusCred)
-if "eventbrite" in eventObj:
-    eventbrite.addEvent(eventObj["eventbrite"], eventbriteCred)
+if "signUpGenius" in eventObj:
+    signUpGenius.addEvent(eventObj["signUpGenius"], signUpGeniusCred)
+# if "eventbrite" in eventObj:
+    # eventbrite.addEvent(eventObj["eventbrite"], eventbriteCred)
+
+
 # realityHub.addEvent(eventObj, realityHubCred)
 # pachamama.addEvent(eventObj, pachmamaCred)
 
