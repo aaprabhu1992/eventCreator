@@ -5,6 +5,8 @@ import argparse
 import helper
 import realityHub
 import pachamama
+import signUpGenius
+import eventbrite
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-fileName',
@@ -13,17 +15,21 @@ parser.add_argument('-fileName',
 parser.add_argument('-realityHub',
                     type=str,
                     help='Reality Hub Credential')
-parser.add_argument('-pachamamaHub',
+parser.add_argument('-signUpGenius',
                     type=str,
-                    help='Pachamama Hub Credential')
-##parser.add_argument('-eventbrite',
-##                    type=str,
-##                    help='Eventbrite Credentials')
+                    help='SignUp Genius Hub Credential')
+# parser.add_argument('-pachamamaHub',
+                    # type=str,
+                    # help='Pachamama Hub Credential')
+parser.add_argument('-eventbrite',
+                   type=str,
+                   help='Eventbrite Credentials')
 args = parser.parse_args()
 fileName = args.fileName
 realityHubCredFile = args.realityHub
-##eventbriteCred = args.eventbrite
-pachmamaCredFile = args.pachamamaHub
+signUpGeniusCredFile = args.signUpGenius
+eventbriteCredFile = args.eventbrite
+# pachmamaCredFile = args.pachamamaHub
 
 eventObj = {}
 try:
@@ -42,14 +48,28 @@ except OSError:
     print("Reality Hub Credentials File Read Error")
 helper.PrettyPrintJSON(realityHubCred)
 
-pachmamaCred = {}
+signUpGeniusCred = {}
 try:
-    with open(pachmamaCredFile, "r") as f:
-        pachmamaCred = json.load(f)
+    with open(signUpGeniusCredFile, "r") as f:
+        signUpGeniusCred = json.load(f)
 except OSError:
-    print("Pachamama Credentials File Read Error")
-helper.PrettyPrintJSON(pachmamaCred)
+    print("Sign Up Genius File Read Error")
+helper.PrettyPrintJSON(signUpGeniusCred)
 
+eventbriteCred = {}
+try:
+    with open(eventbriteCredFile, "r") as f:
+        eventbriteCred = json.load(f)
+except OSError:
+    print("Eventbrite File Read Error")
+helper.PrettyPrintJSON(eventbriteCred)
+
+
+
+# if "signUpGenius" in eventObj:
+    # signUpGenius.addEvent(eventObj["signUpGenius"], signUpGeniusCred)
+if "eventbrite" in eventObj:
+    eventbrite.addEvent(eventObj["eventbrite"], eventbriteCred)
 # realityHub.addEvent(eventObj, realityHubCred)
-pachamama.addEvent(eventObj, pachmamaCred)
+# pachamama.addEvent(eventObj, pachmamaCred)
 
