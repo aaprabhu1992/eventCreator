@@ -1,25 +1,108 @@
 {
-   "name":"Climate Reality Automated Event Creator",
-   "description": " Climate Reality Automated Event Creator in Description",
-   "start_date":"05/10/2021",
-   "start_time":"5:30pm",
-   "end_date":"05/10/2021",
-   "end_time":"6:30pm",
-   "timeZone_Country" :"United States",
-   "timeZone_Time" : "Indiana/Indianapolis - EDT (GMT-04:00)",
-   "venue" : "Zoom",
-   "addr_line_1" : "Climate Reality Project",
-   "addr_line_2" : "Portland Chapter",
-   "addr_city" : "Portland",
-   "addr_state" : "Oregon",
-   "addr_pincode" : "97223",
-   "addr_country" : "United States",
-   "type" : "Workshop",
-   "hostName" : "Portland Chapter",
-   "hostEmail" : "climaterealitypdx@gmail.com",
-   "hostOrg" : "Climate Reality Portland Chapter",
-   "website" : "https://climaterealitypdx.com/",
-   "eventBrite" : {
-	   
-   }	   
+	"name":"Climate Reality Automated Event Creator",
+	"description": " Climate Reality Automated Event Creator in Description",
+	"start_date":"05/10/2021",
+	"start_time":"5:30pm",
+	"end_date":"05/10/2021",
+	"end_time":"6:30pm",
+	"timeZone_Country" :"United States",
+	"timeZone_Time" : "Indiana/Indianapolis - EDT (GMT-04:00)",
+	"venue" : "Zoom",
+	"addr_line_1" : "Climate Reality Project",
+	"addr_line_2" : "Portland Chapter",
+	"addr_city" : "Portland",
+	"addr_state" : "Oregon",
+	"addr_pincode" : "97223",
+	"addr_country" : "United States",
+	"type" : "Workshop",
+	"hostName" : "Portland Chapter",
+	"hostEmail" : "climaterealitypdx@gmail.com",
+	"hostOrg" : "Climate Reality Portland Chapter",
+	"website" : "https://climaterealitypdx.com/",
+	"eventbrite" : {
+		"basic_info" : {
+			"title" : "Trial Event Creation",
+			"organizer" : "The Climate Reality Project: Portland Chapter",
+			"type" : "Class, Training, or Workshop",
+			"topic" : "Food & Drink",
+			"subTopic" : "Food",
+			"tags" : [
+				"vegan",
+				"food",
+				"homelessness"
+			],
+			"location" : {
+				"type" :  "Online event"
+			},
+			"dateAndTime" : {
+				"type" : "Single Event",
+				"zone" : "(GMT-0700) United States (Los Angeles) Time",
+				"start_date":"05/10/2021",
+				"start_time":"5:30 pm",
+				"end_date":"05/10/2021",
+				"end_time":"6:30 pm"
+			}
+		},
+		"details" : {
+			"banner" : "C:\\Users\\Admin\\Downloads\\CookAndServe_Chef.png",
+			"summary" : "Summary of Events",
+			"description" : "Event Description",
+			"add" : [
+				{
+					"type": "image",
+					"content" : "C:\\Users\\Admin\\Downloads\\papas-chorizo4.jpg"
+				}
+			]
+		},
+		"online_page" : {
+			"link" : {
+				"link": "ENTER/ZOOM/LINK/HERE",
+				"title": "Zoom Meeting Link"
+			}
+		},
+		"tickets" : {
+			"type" : "Free",
+			"amount" : "50"
+		},
+		"order_confirmation" : {
+			"confirm" : "This will be shown during order confirmation and email",
+			"email" : "This will be shown during order confirmation and email"
+		},
+		"publish" : {
+		},
+		"invitations" : {
+			"add_guests" :{
+				"type" : "previous",
+				"eventID" : "149506665461"
+			},
+			"email_time" : {
+				"type" : "schedule",
+				"date" : "05/10/2021",
+				"hour" : "11",
+				"min" : "45",
+				"ampm" : "PM"
+			}
+			
+		}
+	},
+	"signUpGenius" : {
+		"title" : "New SignUp Genius Entry",
+		"group" : "Climate Reality",
+		"type" : "Volunteering",
+		"categories" : "Civic & Community",
+		"type_schedule" : "Slots Only",
+		"date" : "05/10/2021",
+		"all_slots" : [
+			{
+				"title" : "Slot 1",
+				"comment" : "Slot 1 Comment",
+				"quantity" : "5"
+			},
+			{
+				"title" : "Slot 2",
+				"comment" : "Slot 2 Comment",
+				"quantity" : "10"
+			}
+		]
+	}
 }
