@@ -74,3 +74,12 @@ def MoveToElement(driver, tagName, displayText):
             actions = ActionChains(driver)
             actions.move_to_element(item).perform()
             break
+
+def GetElementFromTagAndText(driver, tagName, displayText):
+    allItems = driver.find_elements_by_tag_name(tagName)
+    for item in allItems:
+        if item.text == displayText:
+            print("Element found, Tag: {}, Name: {}".format(tagName, displayText))
+            return item
+    print("No Element found, Tag: {}, Name: {}".format(tagName, displayText))
+

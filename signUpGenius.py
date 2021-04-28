@@ -36,18 +36,44 @@ def AddBasicInformation(driver, eventObj):
     helper.ClickElementFromTagAndText(driver, "span", saveAndContiueText)
     helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
     return driver.current_url
+    
+def GetEventID(currentURL):
+    #https://www.eventbrite.com/manage/events/152465467317/details
+    elements = currentURL.split("/")
+    return elements[-3]
 
+def TryDateFilling(inputDateID, text):
+    try:
+        driver.find_element_by_id(inputDateID).click()
+        helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
+        print("Found date")
+        pyautogui.write(text)
+        helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
+        print("Wrote date")
+    except:
+        print("{} Not Found".format(inputDateID))
+    
 def AddSlots(driver, eventObj):
     helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
     helper.ClickElementFromTagAndText(driver, "strong", eventObj["type_schedule"])
+    tabQuantity = 0
+    if eventObj["type_schedule"] == "Slots Only":
+        tabQuantity = 3
+        
+    for i in range(0, tabQuantity):
+        pyautogui.press(["tab"])
     helper.PauseForEffect(SMALL_PAUSE)
-    inputDateID = "overDateCreate"
-    driver.find_element_by_id(inputDateID).click()
-    pyautogui.write(eventObj["date"])
+    pyautogui.write(eventObj["date"], interval = 0.1)
+    print(eventObj["date"])
+    pyautogui.press(["enter"])
     all_slots = eventObj["all_slots"]
-    for slot in all_slots:
+    lenSlots = len(all_slots)
+    pyautogui.press(["tab"])
+    pyautogui.press(["space"])
+    for i in range(0, lenSlots):
+        slot = all_slots[i]
         helper.PauseForEffect(SMALL_PAUSE)
-        helper.ClickElementFromTagAndText(driver, "button" , "Add Slots")
+        driver.find_element_by_name("slotname").click()
         pyautogui.write(slot["title"], interval = 0.1)
         pyautogui.press(["tab"])
         pyautogui.write(slot["comment"], interval = 0.1)
@@ -55,6 +81,8 @@ def AddSlots(driver, eventObj):
         pyautogui.write(slot["quantity"], interval = 0.1)
         pyautogui.press(["tab"])
         helper.PauseForEffect(SMALL_PAUSE)
+        if i < (lenSlots - 1):
+            pyautogui.press(["tab"])
         pyautogui.press(["tab"])
         pyautogui.press(["enter"])
         helper.PauseForEffect(SMALL_PAUSE)
@@ -66,16 +94,21 @@ def AddSlots(driver, eventObj):
 
 
 def AddSettings(driver, eventObj):
-    helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
+    # No Changes in this region hence small pause sufficient
+    helper.PauseForEffect(SMALL_PAUSE)
     saveAndContiueText = "Save and Continue"
     helper.ClickElementFromTagAndText(driver, "span", saveAndContiueText)
-    helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
+    helper.PauseForEffect(SMALL_PAUSE)
 
 
 def AddPublish(driver, eventObj):
-    helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
+    helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT * 2)
     publishButton = "Publish"
-    helper.ClickElementFromTagAndText(driver, "button", publishButton)
+    element = helper.GetElementFromTagAndText(driver, "button", "Save Draft")
+    actions = ActionChains(driver)
+    actions.move_to_element(element).perform()
+    element.send_keys(Keys.SHIFT, Keys.TAB)
+    element.send_keys(Keys.SPACE)
     helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
     element = driver.find_element_by_partial_link_text("https://www.signupgenius")
     return element.text
@@ -105,9 +138,15 @@ def addEvent(eventObj, credentials):
         return eventURL
         
     # url = AddBasicInformation(driver, eventObj)
-    driver.get("https://www.signupgenius.com/index.cfm?go=w.manageSignUp#/29829818/slots/")
-    AddSlots(driver, eventObj)
-    AddSettings(driver, eventObj)
+
+
+    # eventID = GetEventID(url)
+    # driver.get("https://www.signupgenius.com/index.cfm?go=w.manageSignUp#/{}/slots/".format(eventID))
+
+
+    # AddSlots(driver, eventObj)
+    # AddSettings(driver, eventObj)
+    driver.get("https://www.signupgenius.com/index.cfm?go=w.manageSignUp#/29836331/publish/")    
     signUpLink = AddPublish(driver, eventObj)
     print(signUpLink)
     
