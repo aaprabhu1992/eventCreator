@@ -8,6 +8,9 @@ from selenium.webdriver.support.ui import Select
 
 SIGN_UP_GENIUS_TIMEOUT = 10
 SMALL_PAUSE = 3
+MEDIUM_PAUSE = 5
+TAB_COUNT_PUBLISH = 18
+
 def Scroll(distance, occurence):
     for i in range(0,occurence):
         pyautogui.scroll(distance)
@@ -41,20 +44,9 @@ def GetEventID(currentURL):
     #https://www.eventbrite.com/manage/events/152465467317/details
     elements = currentURL.split("/")
     return elements[-3]
-
-def TryDateFilling(inputDateID, text):
-    try:
-        driver.find_element_by_id(inputDateID).click()
-        helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
-        print("Found date")
-        pyautogui.write(text)
-        helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
-        print("Wrote date")
-    except:
-        print("{} Not Found".format(inputDateID))
     
 def AddSlots(driver, eventObj):
-    helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
+    helper.PauseForEffect(MEDIUM_PAUSE)
     helper.ClickElementFromTagAndText(driver, "strong", eventObj["type_schedule"])
     tabQuantity = 0
     if eventObj["type_schedule"] == "Slots Only":
@@ -65,7 +57,9 @@ def AddSlots(driver, eventObj):
     helper.PauseForEffect(SMALL_PAUSE)
     pyautogui.write(eventObj["date"], interval = 0.1)
     print(eventObj["date"])
+    helper.PauseForEffect(SMALL_PAUSE)
     pyautogui.press(["enter"])
+    helper.PauseForEffect(SMALL_PAUSE)
     all_slots = eventObj["all_slots"]
     lenSlots = len(all_slots)
     pyautogui.press(["tab"])
@@ -87,7 +81,7 @@ def AddSlots(driver, eventObj):
         pyautogui.press(["enter"])
         helper.PauseForEffect(SMALL_PAUSE)
     
-    helper.PauseForEffect(SMALL_PAUSE)
+    helper.PauseForEffect(MEDIUM_PAUSE)
     saveAndContiueText = "Save and Continue"
     helper.ClickElementFromTagAndText(driver, "span", saveAndContiueText)
     helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
@@ -102,13 +96,11 @@ def AddSettings(driver, eventObj):
 
 
 def AddPublish(driver, eventObj):
-    helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT * 2)
-    publishButton = "Publish"
-    element = helper.GetElementFromTagAndText(driver, "button", "Save Draft")
-    actions = ActionChains(driver)
-    actions.move_to_element(element).perform()
-    element.send_keys(Keys.SHIFT, Keys.TAB)
-    element.send_keys(Keys.SPACE)
+    helper.PauseForEffect(MEDIUM_PAUSE)
+    for i in range(0, TAB_COUNT_PUBLISH):
+        pyautogui.press(["tab"])
+    helper.PauseForEffect(SMALL_PAUSE)    
+    pyautogui.press(["space"])
     helper.PauseForEffect(SIGN_UP_GENIUS_TIMEOUT)
     element = driver.find_element_by_partial_link_text("https://www.signupgenius")
     return element.text
@@ -136,19 +128,17 @@ def addEvent(eventObj, credentials):
     if not helper.HasPageLoadedIDCheck(driver, SIGN_UP_GENIUS_TIMEOUT, signUpListItemID):
         print("Page has not loaded in time")
         return eventURL
-        
-    # url = AddBasicInformation(driver, eventObj)
-
-
-    # eventID = GetEventID(url)
+    # Start with Base
+    url = AddBasicInformation(driver, eventObj)
+    eventID = GetEventID(url)
     # driver.get("https://www.signupgenius.com/index.cfm?go=w.manageSignUp#/{}/slots/".format(eventID))
 
+    # Other Details
+    AddSlots(driver, eventObj)
+    AddSettings(driver, eventObj)
 
-    # AddSlots(driver, eventObj)
-    # AddSettings(driver, eventObj)
-    driver.get("https://www.signupgenius.com/index.cfm?go=w.manageSignUp#/29836331/publish/")    
+    # Publish
+    driver.get("https://www.signupgenius.com/index.cfm?go=w.manageSignUp#/{}/publish/".format(eventID))    
     signUpLink = AddPublish(driver, eventObj)
     print(signUpLink)
-    
-    
-
+    return signUpLink
