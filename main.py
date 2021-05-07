@@ -18,18 +18,18 @@ parser.add_argument('-realityHub',
 parser.add_argument('-signUpGenius',
                     type=str,
                     help='SignUp Genius Hub Credential')
-# parser.add_argument('-pachamamaHub',
-                    # type=str,
-                    # help='Pachamama Hub Credential')
 parser.add_argument('-eventbrite',
                    type=str,
                    help='Eventbrite Credentials')
+parser.add_argument('-pachamama',
+                   type=str,
+                   help='Pachamama Credentials')
 args = parser.parse_args()
 fileName = args.fileName
 realityHubCredFile = args.realityHub
 signUpGeniusCredFile = args.signUpGenius
 eventbriteCredFile = args.eventbrite
-# pachmamaCredFile = args.pachamamaHub
+pachamamaCredFile = args.pachamama
 
 eventObj = {}
 try:
@@ -64,14 +64,24 @@ except OSError:
     print("Eventbrite File Read Error")
 helper.PrettyPrintJSON(eventbriteCred)
 
+pachamamaCred = {}
+try:
+    with open(pachamamaCredFile, "r") as f:
+        pachamamaCred = json.load(f)
+except OSError:
+    print("Pachamama Credentials File Read Error")
+helper.PrettyPrintJSON(pachamamaCred)
 
 
-if "signUpGenius" in eventObj:
-    signUpGenius.addEvent(eventObj["signUpGenius"], signUpGeniusCred)
+signUpGeniusLink = "https://www.signupgenius.com/go/4090e45adaa2cabfb6-climate4"
+# if "signUpGenius" in eventObj:
+    # signUpGeniusLink = signUpGenius.addEvent(eventObj["signUpGenius"], signUpGeniusCred)
+    
+# eventbriteLink = ""   
 # if "eventbrite" in eventObj:
-    # eventbrite.addEvent(eventObj["eventbrite"], eventbriteCred)
+    # eventbriteLink = eventbrite.addEvent(eventObj["eventbrite"], eventbriteCred, signUpGeniusLink)
 
 
-# realityHub.addEvent(eventObj, realityHubCred)
-# pachamama.addEvent(eventObj, pachmamaCred)
+# realityHub.addEvent(eventObj, realityHubCred, eventbriteLink)
+pachamama.addEvent(eventObj["pachamama"], pachamamaCred, signUpGeniusLink)
 

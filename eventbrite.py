@@ -80,7 +80,7 @@ def CreateBasicInfo(driver, eventObj):
     helper.PauseForEffect(EVENTBRITE_TIMEOUT)
     return driver.current_url
     
-def CreateDetails(driver, eventObj):
+def CreateDetails(driver, eventObj, signUpGeniusLink):
     eventURL = None
     summaryID = "event-design-summary"
     if not helper.HasPageLoadedIDCheck(driver, EVENTBRITE_TIMEOUT, summaryID):
@@ -101,7 +101,9 @@ def CreateDetails(driver, eventObj):
     # Add text
     richTextBoxClass = "eds-richtexteditor__input"
     driver.find_element_by_id(summaryID).send_keys(eventObj["summary"])
-    driver.find_element_by_class_name(richTextBoxClass).send_keys(eventObj["description"])
+    description = eventObj["description"]
+    description = description.replace("$LINK$", signUpGeniusLink)
+    driver.find_element_by_class_name(richTextBoxClass).send_keys(description)
     
     
     # Add Chef Image
@@ -159,14 +161,18 @@ def CreateTickets(driver, eventObj):
     helper.PauseForEffect(EVENTBRITE_TIMEOUT)
  
 
-def CreateOrderConfirmation(driver, eventObj):
+def CreateOrderConfirmation(driver, eventObj, signUpGeniusLink):
     helper.PauseForEffect(EVENTBRITE_TIMEOUT)
     textBoxName = "group-order_confirmation-confirmation_page_message"
-    driver.find_element_by_name(textBoxName).send_keys(eventObj["confirm"])
+    confirm = eventObj["confirm"]
+    confirm = confirm.replace("$LINK$", signUpGeniusLink)
+    driver.find_element_by_name(textBoxName).send_keys(confirm)
     Scroll(-100, 10)
     emailBoxID = "tinymce"
     driver.switch_to_frame(0)
-    driver.find_element_by_xpath('html/body').send_keys(eventObj["email"])
+    email = eventObj["email"]
+    email = confirm.replace("$LINK$", signUpGeniusLink)
+    driver.find_element_by_xpath('html/body').send_keys(email)
     driver.switch_to_default_content()
     pyautogui.press(["tab"])
     pyautogui.press(["tab"])
@@ -237,7 +243,7 @@ def GetEventID(currentURL):
     #https://www.eventbrite.com/manage/events/152465467317/details
     elements = currentURL.split("/")
     return elements[-2]
-def addEvent(eventObj, credentials):    
+def addEvent(eventObj, credentials, signUpGeniusLink):    
     eventURL = None
     driver = webdriver.Chrome()
     driver.maximize_window()
@@ -265,7 +271,7 @@ def addEvent(eventObj, credentials):
     print("Event ID is {}".format(eventID))
 
     driver.get(currentURL)
-    CreateDetails(driver, eventObj["details"])
+    CreateDetails(driver, eventObj["details"], signUpGeniusLink)
 
     driver.get("https://www.eventbrite.com/manage/events/{}/online-event".format(eventID))
     CreateOnlinePage(driver, eventObj["online_page"])
@@ -274,7 +280,7 @@ def addEvent(eventObj, credentials):
     CreateTickets(driver, eventObj["tickets"])
     
     driver.get("https://www.eventbrite.com/myevent/{}/order-confirmation/".format(eventID))
-    CreateOrderConfirmation(driver, eventObj["order_confirmation"])
+    CreateOrderConfirmation(driver, eventObj["order_confirmation"], signUpGeniusLink)
 
     driver.get("https://www.eventbrite.com/manage/events/{}/preview_publish".format(eventID))
     CreatePublish(driver, eventObj["publish"])
@@ -285,3 +291,5 @@ def addEvent(eventObj, credentials):
     driver.get("https://www.eventbrite.com/myevent?eid={}".format(eventID))
     url =  GetEventURL(driver)
     print(url)
+    driver.close()
+    return url

@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import Select
 
 REALITY_HUB_TIMEOUT = 10
 
-def addEvent(eventObj, credentials):    
+def addEvent(eventObj, credentials, eventBriteLink):    
     eventURL = None
     driver = webdriver.Chrome()
     driver.maximize_window()
@@ -120,6 +120,8 @@ def addEvent(eventObj, credentials):
     driver.find_element_by_id(hostNameID).send_keys(eventObj["hostName"])
     driver.find_element_by_id(hostEmailID).send_keys(eventObj["hostEmail"])
     driver.find_element_by_id(hostGroupID).send_keys(eventObj["hostOrg"])
+    if eventBriteLink:
+        eventObj["website"] = eventBriteLink
     driver.find_element_by_id(eventWebsiteID).send_keys(eventObj["website"])
     
 

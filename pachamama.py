@@ -1,5 +1,5 @@
 import helper
-
+import pyautogui
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -7,8 +7,12 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
 
 PACHAMAMA_TIMEOUT = 10
+def Scroll(distance, occurence):
+    for i in range(0,occurence):
+        pyautogui.scroll(distance)
 
-def addEvent(eventObj, credentials):    
+
+def addEvent(eventObj, credentials, signUpGeniusLink):    
     options = webdriver.ChromeOptions();
     options.add_argument("--profile-directory=Default");
     options.add_argument("--whitelisted-ips");
@@ -21,142 +25,108 @@ def addEvent(eventObj, credentials):
     
     driver = webdriver.Chrome(chrome_options=options)
     driver.maximize_window()
-    driver.get("https://connect.pachamama.org/")
-    # Page Load
-    loginButtonText = "Log In"
-    if not helper.HasPageLoadedLinkCheck(driver, PACHAMAMA_TIMEOUT, loginButtonText):
+    driver.get("https://connect.pachamama.org/user/login")
+    signInButtonID = "edit-submit"
+    if not helper.HasPageLoadedIDCheck(driver, PACHAMAMA_TIMEOUT, signInButtonID):
         print("Page has not loaded in time")
         return
-    driver.find_element_by_partial_link_text(loginButtonText).send_keys(Keys.ENTER)
-    googleLoginID = "edit-social-auth-google"
-    if not helper.HasPageLoadedIDCheck(driver, PACHAMAMA_TIMEOUT, googleLoginID):
-        print("Page has not loaded in time")
-        return
-    driver.find_element_by_id(googleLoginID).send_keys(Keys.ENTER)
-    usernameFieldID = "identifierId"
-    if not helper.HasPageLoadedIDCheck(driver, PACHAMAMA_TIMEOUT, usernameFieldID):
-        print("Page has not loaded in time")
-        return
-    driver.find_element_by_id(usernameFieldID).send_keys(credentials["username"])
-    nextButtonClass = "VfPpkd-LgbsSe VfPpkd-LgbsSe-OWXEXe-k8QpJ VfPpkd-LgbsSe-OWXEXe-dgl2Hf nCP5yc AjY5Oe DuMIQc qIypjc TrZEUc lw1w4b"
-    driver.find_element_by_id("identifierNext").click()
-    helper.PauseForEffect(PACHAMAMA_TIMEOUT+30)
-
+    emailFieldID = "edit-name-or-mail"
+    passwordFieldID = "edit-pass"
+    driver.find_element_by_id(emailFieldID).send_keys(credentials["username"])
+    driver.find_element_by_id(passwordFieldID).send_keys(credentials["password"])
+    pyautogui.press(["enter"])
     
     
-    # Login
-    # # emailFieldID = "email"
-    # # passwordFieldID = "password"
-    # # loginButtonID = "main_login_button"
-    # # if not helper.HasPageLoadedIDCheck(driver, REALITY_HUB_TIMEOUT, emailFieldID):
-        # # print("Page has not loaded in time")
-        # # return
-    # # driver.find_element_by_id(emailFieldID).send_keys(credentials["username"])
-    # # driver.find_element_by_id(passwordFieldID).send_keys(credentials["password"])
-    # # driver.find_element_by_id(loginButtonID).send_keys(Keys.ENTER)
-    # Go to Events
-    # # actBarID = "navbarDropdown_1"
-    # # attendEventText = "Attend an Event"
-    # # if not helper.HasPageLoadedIDCheck(driver, REALITY_HUB_TIMEOUT, actBarID):
-        # # print("Page has not loaded in time")
-        # # return
-    # # action = ActionChains(driver)
-    # # actBar = driver.find_element_by_id(actBarID)
-    # # action.click(on_element = actBar)
-    # # action.perform()
-    # Need to see it on the screen before you click
-    # # helper.PauseForEffect(1)
+    helper.PauseForEffect(PACHAMAMA_TIMEOUT)
     
+    # Create an Event
+    eventsLinkText = "Events"
     # Need to create a new chain every time
-    # # action = ActionChains(driver)    
-    # # attendEventLink = driver.find_element_by_partial_link_text(attendEventText)
-    # # action.click(on_element = attendEventLink)
-    # # action.perform()
+    action = ActionChains(driver)    
+    attendEventLink = driver.find_element_by_partial_link_text(eventsLinkText)
+    action.click(on_element = attendEventLink)
+    action.perform()
+    
+    helper.PauseForEffect(1)
+    
+    createEventTextLink = "Create Event"
+    action = ActionChains(driver)    
+    attendEventLink = driver.find_element_by_partial_link_text(createEventTextLink)
+    action.click(on_element = attendEventLink)
+    action.perform()
+    
+    helper.PauseForEffect(PACHAMAMA_TIMEOUT)
+    
+    
+    saveButtonID = "edit-submit"
+    if not helper.HasPageLoadedIDCheck(driver, PACHAMAMA_TIMEOUT, saveButtonID):
+        print("Page has not loaded in time")
+        return
 
-    # # postAnEventID = "html_custom_block_0_0_button"
-    # # if not helper.HasPageLoadedIDCheck(driver, REALITY_HUB_TIMEOUT, postAnEventID):
-        # # print("Page has not loaded in time")
-        # # return
-    # # driver.find_element_by_id(postAnEventID).send_keys(Keys.ENTER)
-    # Fill Event details
-    # # eventNameID = "textField_event_name"
-    # # startDateID = "dateTime_event_start"
-    # # startTimeID = "dateTime_event_start_time"
-    # # endDateID = "dateTime_event_end"
-    # # endTimeID = "dateTime_event_end_time"
-    # # timeZoneClass = "time-zone-link btn btn-primary"
-    # # timeZoneCountryID = "time_zone_country_select"
-    # # timeZoneCityID = "time_zone_city_select"
-    # # eventVenueID = "textField_event_venue"
-    # # addrLine1ID = "Address_event_address_address_1_input"
-    # # addrLine2ID = "Address_event_address_address_2_input"
-    # # cityID = "Address_event_address_address_city_input"
-    # # stateID = "Address_event_address_state_text"
-    # # postCodeID = "Address_event_address_address_postal_code_input"
-    # # countryID = "Address_event_address_country_select"
-    # # eventTypeID = "dropDown_3031"
-    # # hostNameID = "textField_2818"
-    # # hostEmailID = "textField_2820"
-    # # hostGroupID = "textField_3335"
-    # # eventWebsiteID = "link_3336"
-    # # submitEventID = "events_item_form_button"
-    # # if not helper.HasPageLoadedIDCheck(driver, REALITY_HUB_TIMEOUT, eventNameID):
-        # # print("Page has not loaded in time")
-        # # return
+    # Event Details
+    helper.ClickElementFromTagAndText(driver, "label", eventObj["type"])
+    titleID = "edit-title-0-value"
+    driver.find_element_by_id(titleID).send_keys(eventObj["title"])
+    if  "image" in eventObj:
+        pyautogui.press(["tab"])
+        pyautogui.press(["enter"])
+        helper.PauseForEffect(3)
+        pyautogui.write(eventObj["image"], interval = 0.1)
+        pyautogui.press(["enter"])
+        helper.PauseForEffect(PACHAMAMA_TIMEOUT)
+        Scroll(-100, 2)
+        helper.ClickElementFromTagAndText(driver, "div","Small")
     
-    # Basic 
-    # # driver.find_element_by_id(eventNameID).send_keys(eventObj["name"])
-    # # helper.PauseForEffect(REALITY_HUB_TIMEOUT)
-    # # driver.switch_to_frame(0)
-    # # driver.find_element_by_xpath('html/body').send_keys(eventObj["description"])
-    # # driver.switch_to_default_content()
-    # # print("Basic Data Added")
+    groupTypeID = "edit-groups"
+    select = Select(driver.find_element_by_id(groupTypeID))
+    select.select_by_visible_text(eventObj["group"])
+    
+    helper.PauseForEffect(3)
+    # Date and Time
+    eventStartDate = "edit-field-event-date-0-value-date"
+    eventEndDate = "edit-field-event-date-end-0-value-date"
+    eventStartTime = "edit-field-event-date-0-value-time"
+    eventEndTime = "edit-field-event-date-end-0-value-time"
+    driver.find_element_by_id(eventStartDate).send_keys(eventObj["start_date"])
+    element = driver.find_element_by_id(eventStartTime)
+    element.clear()
+    element.send_keys(eventObj["start_time"])
+    
+    element = driver.find_element_by_id(eventEndDate)
+    element.clear()
+    element.send_keys(eventObj["end_date"])     
+    element = driver.find_element_by_id(eventEndTime)
+    element.clear()
+    element.send_keys(eventObj["end_time"])
+    
+    
+    
+    # Location
+    locationID = "edit-field-event-location-0-value"
+    driver.find_element_by_id(locationID).send_keys(eventObj["location"])
+    countryID = "edit-field-event-address-0-address-country-code--2"
 
-    # Time
-    # # helper.ClearAndAddElement(driver, startDateID, eventObj["start_date"])
-    # # helper.ClearAndAddElement(driver, startTimeID, eventObj["start_time"])
-    # # helper.ClearAndAddElement(driver, endDateID, eventObj["end_date"])
-    # # helper.ClearAndAddElement(driver, endTimeID, eventObj["end_time"])
-    
-    # # attendEventLink = driver.find_element_by_partial_link_text("NEW YORK").click()
-    # # helper.PauseForEffect(REALITY_HUB_TIMEOUT)
-    # # select = Select(driver.find_element_by_id(timeZoneCountryID))
-    # # select.select_by_visible_text(eventObj["timeZone_Country"])
-    # # select = Select(driver.find_element_by_id(timeZoneCityID))
-    # # select.select_by_visible_text(eventObj["timeZone_Time"])
-    
-    # # print("Time Data Added")
+    groupTypeID = "edit-groups"
+    select = Select(driver.find_element_by_id(countryID))
+    select.select_by_visible_text(eventObj["country"])
     
     
-    # Address 
-    # # driver.find_element_by_id(eventVenueID).send_keys(eventObj["venue"])
-    # # driver.find_element_by_id(addrLine1ID).send_keys(eventObj["addr_line_1"])
-    # # driver.find_element_by_id(addrLine2ID).send_keys(eventObj["addr_line_2"])
-    # # driver.find_element_by_id(cityID).send_keys(eventObj["addr_city"])
-    # # driver.find_element_by_id(stateID).send_keys(eventObj["addr_state"])
-    # # driver.find_element_by_id(postCodeID).send_keys(eventObj["addr_pincode"])
-    # # select = Select(driver.find_element_by_id(countryID))
-    # # select.select_by_visible_text(eventObj["addr_country"])
-    # # print("Address Data Added")
+    helper.PauseForEffect(3)
+    
+    # Description
+    driver.switch_to_frame(1)
+    description = eventObj["description"]
+    description = description.replace("$LINK$", signUpGeniusLink)
+    driver.find_element_by_xpath('html/body').send_keys(description)
+    driver.switch_to_default_content()
 
-    # Event Type
-    # # select = Select(driver.find_element_by_id(eventTypeID))
-    # # select.select_by_visible_text(eventObj["type"])
-    # # driver.find_element_by_id(hostNameID).send_keys(eventObj["hostName"])
-    # # driver.find_element_by_id(hostEmailID).send_keys(eventObj["hostEmail"])
-    # # driver.find_element_by_id(hostGroupID).send_keys(eventObj["hostOrg"])
-    # # driver.find_element_by_id(eventWebsiteID).send_keys(eventObj["website"])
-    
+    helper.PauseForEffect(3)
 
-    # Submit
-    # # helper.PauseForEffect(REALITY_HUB_TIMEOUT)
-    # # driver.find_element_by_id(submitEventID).click()
     
-    # Ensure event has been completed
-    # # completeButtonID = "send_event_message_button_events_event_message_0_9"
-    # # if not helper.HasPageLoadedIDCheck(driver, REALITY_HUB_TIMEOUT + 30, completeButtonID):
-        # # print("Page has not loaded in time")
-        # # return
-    # # else:
-        # # print("Event URL is {}".format(driver.current_url))
-    # # driver.close()
+    # Save
+    helper.PauseForEffect(PACHAMAMA_TIMEOUT)
+    
+    driver.find_element_by_id(saveButtonID).send_keys(Keys.ENTER)
+    
+    helper.PauseForEffect(PACHAMAMA_TIMEOUT)
+    driver.close()

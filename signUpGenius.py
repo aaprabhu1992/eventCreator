@@ -140,5 +140,6 @@ def addEvent(eventObj, credentials):
     # Publish
     driver.get("https://www.signupgenius.com/index.cfm?go=w.manageSignUp#/{}/publish/".format(eventID))    
     signUpLink = AddPublish(driver, eventObj)
+    driver.close()
     print(signUpLink)
     return signUpLink
