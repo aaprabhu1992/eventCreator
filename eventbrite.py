@@ -238,7 +238,8 @@ def GetEventURL(driver):
     eventURLID = "event_url"
     element = driver.find_element_by_id(eventURLID)
     print(element)
-    return element.text
+    linkURL = element.text
+    return linkURL[:linkURL.find("?")]
 def GetEventID(currentURL):
     #https://www.eventbrite.com/manage/events/152465467317/details
     elements = currentURL.split("/")
