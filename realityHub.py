@@ -122,7 +122,9 @@ def addEvent(eventObj, credentials, eventBriteLink):
     driver.find_element_by_id(hostGroupID).send_keys(eventObj["hostOrg"])
     if eventBriteLink:
         eventObj["website"] = eventBriteLink
-    driver.find_element_by_id(eventWebsiteID).send_keys(eventObj["website"])
+    element = driver.find_element_by_id(eventWebsiteID)
+    element.clear()
+    element.send_keys(eventObj["website"])
     
 
     # Submit

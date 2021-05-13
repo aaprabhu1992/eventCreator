@@ -73,15 +73,16 @@ except OSError:
 helper.PrettyPrintJSON(pachamamaCred)
 
 
-signUpGeniusLink = "https://www.signupgenius.com/go/4090e45adaa2cabfb6-climate4"
-# if "signUpGenius" in eventObj:
-    # signUpGeniusLink = signUpGenius.addEvent(eventObj["signUpGenius"], signUpGeniusCred)
+signUpGeniusLink = ""
+if "signUpGenius" in eventObj:
+    signUpGeniusLink = signUpGenius.addEvent(eventObj["signUpGenius"], signUpGeniusCred)
     
-# eventbriteLink = ""   
-# if "eventbrite" in eventObj:
-    # eventbriteLink = eventbrite.addEvent(eventObj["eventbrite"], eventbriteCred, signUpGeniusLink)
+eventbriteLink = ""   
+if "eventbrite" in eventObj:
+    eventbriteLink = eventbrite.addEvent(eventObj["eventbrite"], eventbriteCred, signUpGeniusLink)
 
-
-# realityHub.addEvent(eventObj, realityHubCred, eventbriteLink)
-pachamama.addEvent(eventObj["pachamama"], pachamamaCred, signUpGeniusLink)
+if "realityHub" in eventObj:
+    realityHub.addEvent(eventObj["realityHub"], realityHubCred, eventbriteLink)
+if "pachamama" in eventObj:
+    pachamama.addEvent(eventObj["pachamama"], pachamamaCred, signUpGeniusLink)
 
