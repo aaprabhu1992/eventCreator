@@ -55,7 +55,7 @@ def HasPageLoadedClassCheck(driver, timeout, className):
         return False
 
 
-def ClickElementFromTagAndText(driver, tagName, displayText):
+def ClickElementFromTagAndText(driver, tagName, displayText, printText = False):
     allItems = driver.find_elements_by_tag_name(tagName)
     for item in allItems:
         if item.text == displayText:
@@ -63,7 +63,8 @@ def ClickElementFromTagAndText(driver, tagName, displayText):
             print("Element found, Tag: {}, Name: {}".format(tagName, displayText))
             return
         else:
-            print(item.text)
+            if printText:
+                print(item.text)
     print("No Element found, Tag: {}, Name: {}".format(tagName, displayText))
 
 
@@ -83,3 +84,12 @@ def GetElementFromTagAndText(driver, tagName, displayText):
             return item
     print("No Element found, Tag: {}, Name: {}".format(tagName, displayText))
 
+def ReadJSON(jsonFile):
+    outputJSON = {}
+    try:
+        with open(jsonFile, "r") as f:
+            outputJSON = json.load(f)
+    except OSError:
+        print("File Read Error")
+    PrettyPrintJSON(outputJSON)
+    return outputJSON

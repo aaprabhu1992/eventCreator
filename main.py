@@ -7,6 +7,7 @@ import realityHub
 import pachamama
 import signUpGenius
 import eventbrite
+import nextdoor
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-fileName',
@@ -24,65 +25,45 @@ parser.add_argument('-eventbrite',
 parser.add_argument('-pachamama',
                    type=str,
                    help='Pachamama Credentials')
+parser.add_argument('-nextdoor',
+                   type=str,
+                   help='NextDoor Credentials')
+                   
+
+# Read all arguments
 args = parser.parse_args()
 fileName = args.fileName
 realityHubCredFile = args.realityHub
 signUpGeniusCredFile = args.signUpGenius
 eventbriteCredFile = args.eventbrite
 pachamamaCredFile = args.pachamama
-
-eventObj = {}
-try:
-    with open(fileName, "r") as f:
-        eventObj = json.load(f)
-except OSError:
-    print("File Read Error")
-helper.PrettyPrintJSON(eventObj)
+nextdoorCredFile = args.nextdoor
 
 
-realityHubCred = {}
-try:
-    with open(realityHubCredFile, "r") as f:
-        realityHubCred = json.load(f)
-except OSError:
-    print("Reality Hub Credentials File Read Error")
-helper.PrettyPrintJSON(realityHubCred)
 
-signUpGeniusCred = {}
-try:
-    with open(signUpGeniusCredFile, "r") as f:
-        signUpGeniusCred = json.load(f)
-except OSError:
-    print("Sign Up Genius File Read Error")
-helper.PrettyPrintJSON(signUpGeniusCred)
-
-eventbriteCred = {}
-try:
-    with open(eventbriteCredFile, "r") as f:
-        eventbriteCred = json.load(f)
-except OSError:
-    print("Eventbrite File Read Error")
-helper.PrettyPrintJSON(eventbriteCred)
-
-pachamamaCred = {}
-try:
-    with open(pachamamaCredFile, "r") as f:
-        pachamamaCred = json.load(f)
-except OSError:
-    print("Pachamama Credentials File Read Error")
-helper.PrettyPrintJSON(pachamamaCred)
+# Read all the Input files
+eventObj = helper.ReadJSON(fileName)
+realityHubCred = helper.ReadJSON(realityHubCredFile)
+signUpGeniusCred = helper.ReadJSON(signUpGeniusCredFile)
+eventbriteCred = helper.ReadJSON(eventbriteCredFile)
+pachamamaCred = helper.ReadJSON(pachamamaCredFile)
+nextdoorCred = helper.ReadJSON(nextdoorCredFile)
 
 
 signUpGeniusLink = ""
 if "signUpGenius" in eventObj:
     signUpGeniusLink = signUpGenius.addEvent(eventObj["signUpGenius"], signUpGeniusCred)
     
-eventbriteLink = ""   
+eventbriteLink = "https://www.eventbrite.com/e/cook-and-serve-vegan-enchiladas-w-chef-emily-forbes-tickets-154013868627"   
 if "eventbrite" in eventObj:
     eventbriteLink = eventbrite.addEvent(eventObj["eventbrite"], eventbriteCred, signUpGeniusLink)
+
+
 
 if "realityHub" in eventObj:
     realityHub.addEvent(eventObj["realityHub"], realityHubCred, eventbriteLink)
 if "pachamama" in eventObj:
     pachamama.addEvent(eventObj["pachamama"], pachamamaCred, signUpGeniusLink)
+if "nextdoor" in eventObj:
+    nextdoor.addEvent(eventObj["nextdoor"], nextdoorCred, eventbriteLink)
 
